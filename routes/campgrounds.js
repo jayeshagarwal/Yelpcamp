@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const middleware = require('../middlewares/index')
 
+// display all campgrounds
 router.get('/', async (req,res)=> {
     try {
         const camps = await Campground.find(req.query)
@@ -14,6 +15,7 @@ router.get('/', async (req,res)=> {
     }
 })
 
+// create new campground 
 router.post('/', middleware.isLoggedIn, async (req,res)=> {
     try {
         req.body.author = {
@@ -31,10 +33,12 @@ router.post('/', middleware.isLoggedIn, async (req,res)=> {
     }
 })
 
+// dispplay form to add new campgrounds
 router.get('/new', middleware.isLoggedIn, async (req,res)=> {
     res.render("campgrounds/new")
 })
 
+// show a particular campground
 router.get('/:id', async (req,res)=> {
     try {
         const camp = await Campground.findById(req.params.id).populate("comments").exec()
@@ -51,8 +55,8 @@ router.get('/:id', async (req,res)=> {
     }
 })
 
+// update a specific campground using method override
 router.put('/:id', middleware.campgroundOwner, async (req,res)=> {
-    // update a specific campground using method override
     try {
         const camp = await Campground.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true})
         if(!camp)
@@ -70,8 +74,8 @@ router.put('/:id', middleware.campgroundOwner, async (req,res)=> {
     }
 })
 
+// display form to edit campground
 router.get('/:id/edit', middleware.campgroundOwner, async (req,res)=> {
-    // display form to edit campground
     try {
         const camp = await Campground.findById(req.params.id)
         if(!camp)
@@ -86,6 +90,7 @@ router.get('/:id/edit', middleware.campgroundOwner, async (req,res)=> {
     }
 })
 
+// delete a campground
 router.delete('/:id', middleware.campgroundOwner, async (req,res)=> {
     try {
         await Campground.findByIdAndDelete(req.params.id)  

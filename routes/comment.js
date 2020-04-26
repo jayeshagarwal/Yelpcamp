@@ -4,8 +4,8 @@ const express = require('express')
 const router = express.Router({mergeParams: true})
 const middleware = require("../middlewares/index") 
 
+// add comment to campground
 router.post('/', middleware.isLoggedIn, async (req,res)=> {
-    // add comment to campground
     try {
         const camp = await Campground.findById(req.params.id)
         if(!camp)
@@ -28,8 +28,8 @@ router.post('/', middleware.isLoggedIn, async (req,res)=> {
     }
 })
 
+// display form to add comment
 router.get('/', middleware.isLoggedIn, async (req,res)=> {
-    // display form to add comment
     try {
         const camp = await Campground.findById(req.params.id)
         res.render('comments/new', {camp})
@@ -41,8 +41,8 @@ router.get('/', middleware.isLoggedIn, async (req,res)=> {
     }
 })
 
+// display form to edit comment
 router.get('/:commentId', middleware.commentOwner, async (req,res)=> {
-    // display form to edit comment
     try {
         const comment = await Comment.findById(req.params.commentId)
         if(!comment)
@@ -58,8 +58,8 @@ router.get('/:commentId', middleware.commentOwner, async (req,res)=> {
     }
 })
 
+// edit comment
 router.put('/:commentId', middleware.commentOwner, async (req,res)=> {
-    // edit comment
     try {
         const comment = await Comment.findByIdAndUpdate(req.params.commentId, req.body, {new: true, runValidators: true})
         if(!comment)
@@ -75,6 +75,7 @@ router.put('/:commentId', middleware.commentOwner, async (req,res)=> {
     }
 })
 
+//delete comment
 router.delete('/:commentId', middleware.commentOwner, async (req,res)=> {
     try {
         const camp = await Campground.findById(req.params.id)

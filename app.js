@@ -13,6 +13,8 @@ const app = express()
 require('./db/mongoose')
 
 app.set("view engine", "ejs")
+
+// getting data in JSON format and send back data into JSON
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(methodOverride("_method"))
