@@ -7,10 +7,12 @@ router.get("/", (req,res)=> {
     res.render("landing");
 })
 
+// display form to sign up a user
 router.get('/register', (req,res)=> {
     res.render("register")
 })
 
+// signup a user and then logging them in
 router.post('/register', async (req,res)=> {
     try {
         const newUser = new User({username: req.body.username})
@@ -28,10 +30,12 @@ router.post('/register', async (req,res)=> {
     }
 })
 
+// display login form
 router.get("/login", (req,res)=> {
     res.render('login')
 })
 
+// authenticating user
 router.post("/login", passport.authenticate('local', {
     successRedirect: '/campgrounds',
     failureRedirect: "/login",
@@ -39,6 +43,7 @@ router.post("/login", passport.authenticate('local', {
     successFlash: "Welcome to YelpCamp"
 }), (req,res)=> {})
 
+// log out user
 router.get('/logout', (req,res)=> {
     req.logout();
     req.flash("success", "Logged you Out!")
